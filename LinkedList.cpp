@@ -44,13 +44,14 @@ public:
 	Node* next;
 };
 	Node* head;
+	int countnode();
 void insertFirst(Node** NODE , string newURL );
 void deleteFirst(Node** NODE);
 void insertLast(Node ** NODE,string newURL);
 void deleteLast(Node* NODE);
 void insertAfter(string data, int n) ;
 void deleteAfter(int index);
-int search(string url);
+int search(string item);
 string display();
 
 void printList(Node* n)
@@ -111,7 +112,38 @@ printList(head);
 deleteAfter(4);
 cout<<"\n\nAfter Deleting   by index all url in node are:\n";
 printList(head);
+cout<<"\nTHe size of node="<<countnode()<<endl;
+
+//search
+string urlsearch;
+//cout<<"\n Enter a URL to Search on the linked list??\n ";
+//cin>>urlsearch;
+int indexsearch=search("www.facebook.com");
+if(indexsearch<0){
+	cout<<"\n Element not found"<<endl;
+}
+else{
+	cout<<"The URL you entered found!!"<<endl;
+	cout<< "The URL Index="<<indexsearch;
+}
+
+//display in forward manner
+cout<<endl;
+cout<<"Linked List in forward manner is: \n";
+printList(head);
+
 	return 0;
+}
+
+
+int countnode(){
+	Node* temp = head;
+      int i = 0;
+      while(temp != NULL) {
+        i++;
+        temp = temp->next;
+      }
+      return i; 
 }
 
 void insertFirst(Node** HEAD, string newURL){
@@ -224,3 +256,40 @@ void deleteAfter(int n){
 	temp1->next=temp2->next;
 	delete temp2;
 }
+
+
+
+int search(string item ) //function to search element in the linked list 
+{  
+int n=countnode();
+ Node *tmp;  
+    int i=0,flag;  
+    tmp = head;   
+    if(head == NULL)  
+    {  
+    return -1;
+        cout<<"\nEmpty List\n";  
+    }  
+    else  
+    {   
+        while (tmp!=NULL)  
+        {  
+        //int compare = s1.compare(s2);
+       int c=tmp->data.compare(item);
+            if(c==0)  //If element is present in the list
+            {  
+            return i+1;
+            //break;
+                cout<<"Item found at location: "<<(i+1); flag=0; } else { flag++; } i++; tmp = tmp->next;  
+        }  
+        if(flag==n) //If element is not present in the list
+        {  
+            cout<<"Item not found\n";  
+            return -1;
+        }  
+    } 
+	//return 0; 
+
+}
+
+
