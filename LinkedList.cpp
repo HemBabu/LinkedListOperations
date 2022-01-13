@@ -43,11 +43,16 @@ public:
 	string data;
 	Node* next;
 };
-
+	Node* head;
 void insertFirst(Node** NODE , string newURL );
-void insertLast(Node ** NODE,string newURL);
 void deleteFirst(Node** NODE);
-void deleteLast(Node** NODE);
+void insertLast(Node ** NODE,string newURL);
+void deleteLast(Node* NODE);
+void insertAfter(string data, int n) ;
+void deleteAfter(int index);
+int search(string url);
+string display();
+
 void printList(Node* n)
 {
 	while (n != NULL) {
@@ -57,18 +62,16 @@ void printList(Node* n)
 	}
 }
 
-
+	
 int main()
 {
-	Node* head = NULL;
-	Node* second = NULL;
-	Node* third = NULL;
+
+	 head = NULL;
 
 	// allocate 3 nodes in the heap
 	head = new Node();
-	second = new Node();
-	third = new Node();
 
+/*
 	head->data = "https://www.youtube.com/"; // assign data in first node
 	head->next = second; // Link first node with second
 
@@ -77,33 +80,48 @@ int main()
 
 	third->data = "https://www.twitter.com/"; // assign data to third node
 	third->next = NULL;
+*/
 
-	insertFirst(&head,"https://www.google.com/");
+	insertFirst(&head,"https://www.google1.com/");
+		insertFirst(&head,"https://www.google2.com/");
+			insertFirst(&head,"https://www.google3.com/");
+				insertFirst(&head,"https://www.google4.com/");
+					insertFirst(&head,"https://www.google5.com/");
+	
 	printList(head);
+	
+	
 	deleteFirst(&head);
+	
+	
 	cout<<"\nAfter deleting first url in node\n";
 	printList(head);
 	
 	insertLast(&head,"https://www.google.com/");
 	cout<<"\n\nAfter adding at last first url in node\n";
 printList(head);
-cout<<"\n\nAfter Deleting at last All urls in node are \n";
 
+deleteLast(head);
+cout<<"\n\nAfter deleting at last first url in node\n";
 printList(head);
-
+insertAfter("https://www.twitter.com",2);
+insertAfter("www.facebook.com",3);
+cout<<"\n\nAfter adding  after index first url in node\n";
+printList(head);
+deleteAfter(4);
+cout<<"\n\nAfter Deleting   by index all url in node are:\n";
+printList(head);
 	return 0;
 }
+
 void insertFirst(Node** HEAD, string newURL){
-	/* 1. allocate node */
-   // struct Node* new_node = (struct node*) malloc(sizeof(struct Node)); 
+	
 Node* new_node=new Node();
-    /* 2. put in the data */
+   
     new_node->data = newURL; 
 
-    /* 3. Make next of new node as head */
     new_node->next = (*HEAD); 
 
-    /* 4. move the head to point to the new node */
     (*HEAD) = new_node; 
 }
 void deleteFirst(Node** HEAD){
@@ -155,15 +173,54 @@ void insertLast(Node** END,string newURL){
     return; 
 }
 
-void deleteLast(Node** END){
-	if((*END )== NULL) {
-        cout<<"\nCan not be deleted due to insufficient data on the node\n";
-    }
 
-    
-	Node *tmp=new Node();
+void deleteLast(Node* head){
+if(head != NULL) {
+        if(head->next == NULL) {
+          head = NULL;
+        } else {
+          Node* temp = head;
+          while(temp->next->next != NULL)
+            temp = temp->next;
+          Node* lastNode = temp->next;
+          temp->next = NULL;
+          //free(lastNode); 
+          delete lastNode;
+        }
+      }
+}
+
+void insertAfter(string data, int n)  
+{
+  	Node* temp1=new Node();
+	temp1->data=data;
+	temp1->next=NULL;
 	
-	tmp->next = (*END)->next;
-    delete *END;
-    *END = tmp->next;
+	if(n==1){
+		temp1->next=head;
+		head=temp1;
+		return;
+	}
+	Node* temp2=head;
+	for(int i=0;i<n-2;i++){
+		temp2=temp2->next; 
+	}
+	temp1->next=temp2->next;
+	temp2->next=temp1;
+} 
+
+
+void deleteAfter(int n){
+	Node * temp1=head;
+	if(n==1){
+		head=temp1->next;
+	}
+	int i;
+	for(i=0;i<n-2;i++){
+		temp1=temp1->next;
+		
+	}
+	Node * temp2=temp1->next;
+	temp1->next=temp2->next;
+	delete temp2;
 }
